@@ -17,14 +17,10 @@ country2 = st.selectbox("Selecciona otro país:", paises)
 
 countries = translator(country1 = country1.lower(), country2 = country2.lower())
 
-try:
-    salaries = extraction(countries = countries)
+salaries = extraction(countries = countries)
 
-    df = cleaning(country1.capitalize(), country2.capitalize(), salaries)
+df = cleaning(country1.capitalize(), country2.capitalize(), salaries)
 
-    grafico = graph(df, country1.capitalize(), country2.capitalize())
+grafico = graph(df, country1.capitalize(), country2.capitalize())
 
-    st.image("Gráficos por países.png", caption = "Gráficos")
-
-except:
-    raise KeyError("Escribe los nombres de los países en inglés. Sentimos las molestias")
+st.image("Gráficos por países.png", caption = "Gráficos")
