@@ -28,36 +28,37 @@ def main():
 
     def project():
 
-        my_bar = st.progress(0)
-        for percent_complete in range(100):
-            time.sleep(0.05)
-            my_bar.progress(percent_complete + 1)
-
         paises = ["Spain", "France", "Germany", "Norway", "Italy", "Ireland",
                   "Switzerland", "Sweden", "Finland", "Poland", "Greece"]
 
-        country1 = st.selectbox("Selecciona un país:", paises)
-        country2 = st.selectbox("Selecciona otro país:", paises)
+        with st.form("Selección de países"):
+            country1 = st.selectbox("Selecciona un país:", paises)
+            country2 = st.selectbox("Selecciona otro país:", paises)
+            submitted = st.form_submit_button("Enviar")
 
-        st.exception("Seleccione dos países distintos.")
+            if submitted:
+                try:
+                    countries = translator(country1=country1.lower(),
+                                           country2=country2.lower())
 
-        countries = translator(country1=country1.lower(),
-                               country2=country2.lower())
+                    salaries = extraction(countries=countries)
 
-        salaries = extraction(countries=countries)
+                    df = cleaning(country1.capitalize(),
+                                  country2.capitalize(), salaries)
 
-        df = cleaning(country1.capitalize(), country2.capitalize(), salaries)
+                    dates = [df.index[i] for i in range(len(df.index))]
 
-        dates = [df.index[i] for i in range(len(df.index))]
+                    country_1 = country1.lower()
+                    country_2 = country2.lower()
 
-        country_1 = country1.lower()
-        country_2 = country2.lower()
+                    st.set_option('deprecation.showPyplotGlobalUse', False)
+                    if st.checkbox("Visualizar los datos"):
+                        st.dataframe(df)
+                    st.pyplot(
+                        graph(df=df, country_1=country_1, country_2=country_2))
 
-        st.set_option('deprecation.showPyplotGlobalUse', False)
-
-        if st.checkbox("Visualizar los datos"):
-            st.dataframe(df)
-        st.pyplot(graph(df=df, country_1=country_1, country_2=country_2))
+                except:
+                    st.exception("Seleccione dos países distintos.")
 
     def method():
         st.title("Metodología aplicada")
@@ -90,5 +91,6 @@ def main():
         project()
     else:
         method()
+
 
 main()
