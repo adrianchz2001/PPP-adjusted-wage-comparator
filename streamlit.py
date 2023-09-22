@@ -10,82 +10,83 @@ from unidecode import unidecode
 from time import sleep
 from funciones import translator, cleaning, graph, extraction
 
-st.set_page_config(
-    page_title = "Salarios por PPA",
-    page_icon="🪙",
-    )
 
 def main():
-    st.title("Comparador de salarios ajustados por PPA")
-    st.header(
-        "¿Quieres saber cuánto ganarías en un país si cobraras según la paridad adquisitiva de otro?")
-    st.write("Este proyecto te permite seleccionar dos países dentro de un rango determinado y comparar el salario medio de un país con el mismo salario medio ajustado a la paridad de poder adquisitivo (PPA) del otro país; esto nos permite saber 2 cosas:/n1- El salario medio del país en cuestión y su evolución./n2- El poder adquisitivo real de una persona cuando se compara con el otro país")
-    st.image("medium-illustration-paycheque-globe.jpg")
 
+    st.set_page_config(
+        page_title="Salarios por PPA",
+        page_icon="🪙",
+    )
 
-def project():
-    
-    my_bar = st.progress(0)
-    for percent_complete in range(100):
-        time.sleep(0.05)
-        my_bar.progress(percent_complete + 1)
+    def main_page():
 
-    paises = ["Spain", "France", "Germany", "Norway", "Italy", "Ireland",
-              "Switzerland", "Sweden", "Finland", "Poland", "Greece"]
+        st.title("Comparador de salarios ajustados por PPA")
+        st.header(
+            "¿Quieres saber cuánto ganarías en un país si cobraras según la paridad adquisitiva de otro?")
+        st.write("Este proyecto te permite seleccionar dos países dentro de un rango determinado y comparar el salario medio de un país con el mismo salario medio ajustado a la paridad de poder adquisitivo (PPA) del otro país; esto nos permite saber 2 cosas:/n1- El salario medio del país en cuestión y su evolución./n2- El poder adquisitivo real de una persona cuando se compara con el otro país")
+        st.image("medium-illustration-paycheque-globe.jpg")
 
-    country1 = st.selectbox("Selecciona un país:", paises)
-    country2 = st.selectbox("Selecciona otro país:", paises)
-    
-    st.exception("Seleccione dos países distintos.")
+    def project():
 
-    countries = translator(country1=country1.lower(),
-                           country2=country2.lower())
+        my_bar = st.progress(0)
+        for percent_complete in range(100):
+            time.sleep(0.05)
+            my_bar.progress(percent_complete + 1)
 
-    salaries = extraction(countries=countries)
+        paises = ["Spain", "France", "Germany", "Norway", "Italy", "Ireland",
+                  "Switzerland", "Sweden", "Finland", "Poland", "Greece"]
 
-    df = cleaning(country1.capitalize(), country2.capitalize(), salaries)
+        country1 = st.selectbox("Selecciona un país:", paises)
+        country2 = st.selectbox("Selecciona otro país:", paises)
 
-    dates = [df.index[i] for i in range(len(df.index))]
+        st.exception("Seleccione dos países distintos.")
 
-    country_1 = country1.lower()
-    country_2 = country2.lower()
+        countries = translator(country1=country1.lower(),
+                               country2=country2.lower())
 
-    st.set_option('deprecation.showPyplotGlobalUse', False)
+        salaries = extraction(countries=countries)
 
-    if st.checkbox("Visualizar los datos"):
-        st.dataframe(df)
-    st.pyplot(graph(df=df, country_1=country_1, country_2=country_2))
+        df = cleaning(country1.capitalize(), country2.capitalize(), salaries)
 
+        dates = [df.index[i] for i in range(len(df.index))]
 
-def method():
-    st.title("Metodología aplicada")
-    st.header("¿De dónde salen los datos?")
-    st.write("Los datos salen de la base de datos de Eurostat y de la página web del diario español Expansión, conocida popularmente esta página web como 'Datosmacro'.")
-    st.header("¿Qué tan fiables son los datos?")
-    st.write("Dado que Eurostat es una institución propiedad de la Comisión Europea para el registro de estadísticas de países dentro y fuera de la UE-27 que pueda interesar a los mismos, consideramos su fiabilidad como bastante elevada. En cuanto a Eurostat, independientemente del prestigio del diario Expansión, que en temas económicos es innegable, contamos con que esta página se dedica, meramente, a recopilar datos que salen de los Institutos Nacionales de Estadística de cada país, de modo que funciona como un recopilatorio de estadísticas oficiales de cada nación.")
-    st.write("Si deseas conocer más sobre mí o mis proyectos, te dejo a continuación mi enlace a GitHub y a LinkedIn. ¡Muchas gracias por tu atención!")
-    url_LK = "https://linkedin.com/in/adri%C3%A1n-ch%C3%A1vez"
-    url_git = "https://github.com/adrianchz2001"
+        country_1 = country1.lower()
+        country_2 = country2.lower()
 
-    column1, column2 = st.columns(2)
-    with column1:
-        st.image("LinkedIn_logo_initials.png")
-        st.markdown(f"[Enlace a mi LinkedIn. Click aquí]({url_LK})")
-    with column2:
-        st.image("GitHub-Mark.png")
-        st.markdown(f"[Enlace a mi GitHub. Click aquí]({url_git})")
+        st.set_option('deprecation.showPyplotGlobalUse', False)
 
+        if st.checkbox("Visualizar los datos"):
+            st.dataframe(df)
+        st.pyplot(graph(df=df, country_1=country_1, country_2=country_2))
 
-# Barra lateral para navegar entre las páginas
-opciones_paginas = ["Página Inicial",
-                    "Página de Proyecto", "Página de Metodología"]
-pagina_seleccionada = st.sidebar.selectbox(
-    "Selecciona una página:", opciones_paginas)
+    def method():
+        st.title("Metodología aplicada")
+        st.header("¿De dónde salen los datos?")
+        st.write("Los datos salen de la base de datos de Eurostat y de la página web del diario español Expansión, conocida popularmente esta página web como 'Datosmacro'.")
+        st.header("¿Qué tan fiables son los datos?")
+        st.write("Dado que Eurostat es una institución propiedad de la Comisión Europea para el registro de estadísticas de países dentro y fuera de la UE-27 que pueda interesar a los mismos, consideramos su fiabilidad como bastante elevada. En cuanto a Eurostat, independientemente del prestigio del diario Expansión, que en temas económicos es innegable, contamos con que esta página se dedica, meramente, a recopilar datos que salen de los Institutos Nacionales de Estadística de cada país, de modo que funciona como un recopilatorio de estadísticas oficiales de cada nación.")
+        st.write("Si deseas conocer más sobre mí o mis proyectos, te dejo a continuación mi enlace a GitHub y a LinkedIn. ¡Muchas gracias por tu atención!")
+        url_LK = "https://linkedin.com/in/adri%C3%A1n-ch%C3%A1vez"
+        url_git = "https://github.com/adrianchz2001"
 
-# Mostrar la página seleccionada
-if pagina_seleccionada == "Página Inicial":
-    main()
-elif pagina_seleccionada == "Página de Proyecto":
-    project()
-else:
-    method()
+        column1, column2 = st.columns(2)
+        with column1:
+            st.image("LinkedIn_logo_initials.png")
+            st.markdown(f"[Enlace a mi LinkedIn. Click aquí]({url_LK})")
+        with column2:
+            st.image("GitHub-Mark.png")
+            st.markdown(f"[Enlace a mi GitHub. Click aquí]({url_git})")
+
+    # Barra lateral para navegar entre las páginas
+    opciones_paginas = ["Página Inicial",
+                        "Página de Proyecto", "Página de Metodología"]
+    pagina_seleccionada = st.sidebar.selectbox(
+        "Selecciona una página:", opciones_paginas)
+
+    # Mostrar la página seleccionada
+    if pagina_seleccionada == "Página Inicial":
+        main_page()
+    elif pagina_seleccionada == "Página de Proyecto":
+        project()
+    else:
+        method()
