@@ -90,3 +90,5 @@ def main():
         project()
     else:
         method()
+
+main()
