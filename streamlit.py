@@ -13,7 +13,7 @@ from funciones import translator, cleaning, graph, extraction
 # Título de la página
 
 def main():
-    st.set_page_congig("🪙 Salarios-por-PPA")
+    st.set_page_config("🪙 Salarios-por-PPA")
     st.title("Comparador de salarios ajustados por PPA")
     st.header(
         "¿Quieres saber cuánto ganarías en un país si cobraras según la paridad adquisitiva de otro?")
