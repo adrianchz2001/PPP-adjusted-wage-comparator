@@ -10,7 +10,10 @@ from unidecode import unidecode
 from time import sleep
 from funciones import translator, cleaning, graph, extraction
 
-st.set_page_config("🪙 Salarios-por-PPA")
+st.set_page_config(
+    page_title = "Salarios por PPA",
+    page_icon="🪙",
+    )
 
 def main():
     st.title("Comparador de salarios ajustados por PPA")
