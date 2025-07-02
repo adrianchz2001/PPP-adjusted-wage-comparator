@@ -1,7 +1,6 @@
 import streamlit as st
 import requests
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 import matplotlib.pyplot as plt
 from deep_translator import GoogleTranslator
@@ -122,3 +121,4 @@ def graph(df, country_1, country_2):
     plt.xlabel("Years")
     plt.ylabel("PPPs (actual individual expenditure)")
     plt.legend([f"PPPs of {country_1.capitalize()}", f"PPPs of {country_2.capitalize()}"], loc= 'best', fontsize= 12)
+    plt.show()
