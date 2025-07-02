@@ -33,36 +33,24 @@ def translator(country1, country2):
 def extraction(countries):
     url_1 = f"https://datosmacro.expansion.com/mercado-laboral/salario-medio/{countries[0].lower()}"
     url_2 = f"https://datosmacro.expansion.com/mercado-laboral/salario-medio/{countries[1].lower()}"
-    
+
     response_1 = requests.get(url_1)
-    
     sleep(1)
-    
     response_2 = requests.get(url_2)
-    
+
     soup_1 = BeautifulSoup(response_1.text, "html.parser")
     soup_2 = BeautifulSoup(response_2.text, "html.parser")
-    
-    mean_wage_1 = [soup_1.find_all("td", class_ = "numero")[i].text for i in range(len(soup_1.find_all("td", class_ = "numero")))]
 
-    mean_wage_2 = [soup_2.find_all("td", class_ = "numero")[i].text for i in range(len(soup_2.find_all("td", class_ = "numero")))]
-    
-    mean_wage_1 = [mean_wage_1[i].split()[0] for i in range(len(mean_wage_1))]
+    def extract_clean_wages(soup):
+        cells = soup.find_all("td", class_="numero")
+        values = [c.text.strip().split()[0] for c in cells if c.text.strip()]
+        values = values[::3]  # Filtra cada 3 para seguir el patrón
+        if values: values.pop()  # Elimina el último si hay uno de más
+        return values[::-1]  # Invertimos para orden cronológico
 
-    mean_wage_2 = [mean_wage_2[i].split()[0] for i in range(len(mean_wage_2))]
-    
-    mean_wage_1 = mean_wage_1[::3] # For some reason, the webpage returns a value that it's not on the mean wages table
-    
-    mean_wage_2 = mean_wage_2[::3] # However, the return follows a pattern. Therefore, every two values after the the first one and so on are deleted
-    
-    del mean_wage_1[-1] # Eurostat has data only referred to the PPP until 2021, but Datosmacro offers data for mean wages up to 2022
-    
-    del mean_wage_2[-1]
-    
-    mean_wage_1 = mean_wage_1[::-1] # The values are inverted, so that we can get, then, a DataFrame with the values in an ascending order by year
-    
-    mean_wage_2 = mean_wage_2[::-1]
-    
+    mean_wage_1 = extract_clean_wages(soup_1)
+    mean_wage_2 = extract_clean_wages(soup_2)
+
     return [mean_wage_1, mean_wage_2]
 
 def cleaning(country1, country2, wages):
