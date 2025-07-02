@@ -82,8 +82,8 @@ def cleaning(country1, country2, wages):
     df[f"Mean wage of {country1.capitalize()}"] = wage1
     df[f"Mean wage of {country2.capitalize()}"] = wage2
     
-    df[f"What would you earn in {country2.capitalize()} with the power purchasing of {country1.capitalize()}"] = [round((df[f"Mean wage of {country1.capitalize()}"].iloc[i] * df[f"{country2.capitalize()}"].iloc[i])/(df[f"{country1.capitalize()}"].iloc[i]), 2) for i in range(len(df[f"Mean wage of {country1.capitalize()}"]))]
-    df[f"What would you earn in {country1.capitalize()} with the power purchasing of {country2.capitalize()}"] = [round((df[f"Mean wage of {country2.capitalize()}"].iloc[i] * df[f"{country1.capitalize()}"].iloc[i])/(df[f"{country2.capitalize()}"].iloc[i]), 2) for i in range(len(df[f"Mean wage of {country2.capitalize()}"]))]
+    df[f"What should you earn in {country2.capitalize()} if you want to keep your power purchasing from {country1.capitalize()}"] = [round((df[f"Mean wage of {country1.capitalize()}"].iloc[i] * df[f"{country2.capitalize()}"].iloc[i])/(df[f"{country1.capitalize()}"].iloc[i]), 2) for i in range(len(df[f"Mean wage of {country1.capitalize()}"]))]
+    df[f"What should you earn in {country1.capitalize()} if you want to keep your power purchasing from {country2.capitalize()}"] = [round((df[f"Mean wage of {country2.capitalize()}"].iloc[i] * df[f"{country1.capitalize()}"].iloc[i])/(df[f"{country2.capitalize()}"].iloc[i]), 2) for i in range(len(df[f"Mean wage of {country2.capitalize()}"]))]
     
     return df
 
