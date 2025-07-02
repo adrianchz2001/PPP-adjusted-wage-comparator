@@ -76,11 +76,8 @@ def cleaning(country1, country2, wages):
     
     df = df.loc[:, [country1.capitalize(), country2.capitalize()]]
     
-    wage1 = [float(i) for i in wages[0]]
-    wage1 = [i*1000 for i in wage1]
-
-    wage2 = [float(i) for i in wages[1]]
-    wage2 = [i*1000 for i in wage2]
+    wage1 = [float(i) * 1000 for i in wages[0][:len(df)]]
+    wage2 = [float(i) * 1000 for i in wages[1][:len(df)]]
     
     df[f"Mean wage of {country1.capitalize()}"] = wage1
     df[f"Mean wage of {country2.capitalize()}"] = wage2
