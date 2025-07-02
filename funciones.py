@@ -122,4 +122,3 @@ def graph(df, country_1, country_2):
     plt.xlabel("Years")
     plt.ylabel("PPPs (actual individual expenditure)")
     plt.legend([f"PPPs of {country_1.capitalize()}", f"PPPs of {country_2.capitalize()}"], loc= 'best', fontsize= 12)
-    plt.savefig("Gráficos por países.png", format = "png")
