@@ -2,7 +2,6 @@ import streamlit as st
 import requests
 import time
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 import matplotlib.pyplot as plt
 from deep_translator import GoogleTranslator
@@ -19,11 +18,14 @@ def main():
     )
 
     def main_page():
-
         st.title("Comparador de salarios ajustados por PPA")
         st.header(
             "¿Quieres saber cuánto ganarías en un país si cobraras según la paridad adquisitiva de otro?")
-        st.write("Este proyecto te permite seleccionar dos países dentro de un rango determinado y comparar el salario medio de un país con el mismo salario medio ajustado a la paridad de poder adquisitivo (PPA) del otro país; esto nos permite saber 2 cosas:/n1- El salario medio del país en cuestión y su evolución./n2- El poder adquisitivo real de una persona cuando se compara con el otro país")
+        st.write(
+            "Este proyecto te permite seleccionar dos países dentro de un rango determinado y comparar el salario medio de un país con el mismo salario medio ajustado a la paridad de poder adquisitivo (PPA) del otro país; esto nos permite saber 2 cosas:\n"
+            "1- El salario medio del país en cuestión y su evolución.\n"
+            "2- El poder adquisitivo real de una persona cuando se compara con el otro país"
+        )
         st.image("medium-illustration-paycheque-globe.jpg")
 
     def project():
@@ -37,6 +39,10 @@ def main():
             submitted = st.form_submit_button("Enviar")
 
             if submitted:
+                if country1 == country2:
+                    st.error("Selecciona dos países distintos.")
+                    return
+
                 try:
                     countries = translator(country1=country1.lower(),
                                            country2=country2.lower())
@@ -52,13 +58,16 @@ def main():
                     country_2 = country2.lower()
 
                     st.set_option('deprecation.showPyplotGlobalUse', False)
+
                     if st.checkbox("Visualizar los datos"):
                         st.dataframe(df)
-                    st.pyplot(
-                        graph(df=df, country_1=country_1, country_2=country_2))
 
-                except:
-                    st.exception("Seleccione dos países distintos.")
+                    graph(df=df, country_1=country_1, country_2=country_2)
+                    st.pyplot()  # Ahora sí: muestra el gráfico global generado
+
+                except Exception as e:
+                    st.error("Se ha producido un error inesperado:")
+                    st.exception(e)
 
     def method():
         st.title("Metodología aplicada")
