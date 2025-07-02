@@ -87,38 +87,35 @@ def cleaning(country1, country2, wages):
     return df
 
 def graph(df, country_1, country_2):
-    dates = [df.index[i] for i in range(len(df.index))]
-    
-    country_1 = country_1.lower()
-    country_2 = country_2.lower()
-    
-    plt.figure(figsize = (16, 12))
-    
+    dates = list(df.index)
+
+    country_1_cap = country_1.capitalize()
+    country_2_cap = country_2.capitalize()
+
+    plt.figure(figsize=(16, 12))
+
     plt.subplot(3, 1, 1)
-    plt.plot(dates, df[f"Adjusted wage for {country1.capitalize()}"], linestyle= '--', color= 'orange')
-    plt.plot(dates, df[f"Mean wage of {country_2.capitalize()}"], linestyle= '-', color= 'blue')
-
+    plt.plot(dates, df[f"Adjusted wage for {country_1_cap}"], linestyle='--', color='orange')
+    plt.plot(dates, df[f"Mean wage of {country_2_cap}"], linestyle='-', color='blue')
     plt.grid()
     plt.xlabel("Years")
     plt.ylabel("Salary (adjusted, in euros)")
-    plt.legend([f"What should you earn in {country_2.capitalize()} if you want to keep the purchasing power from {country_1.capitalize()}", f"Mean wage in {country_2.capitalize()}"], loc= 'best', fontsize= 10)
-    
-    
+    plt.legend([f"What should you earn in {country_2_cap} if you want to keep the purchasing power from {country_1_cap}",
+                f"Mean wage in {country_2_cap}"], loc='best', fontsize=10)
+
     plt.subplot(3, 1, 2)
-    plt.plot(dates, df[f"Adjusted wage for {country2.capitalize()}"], linestyle= '--', color= 'orange')
-    plt.plot(dates, df[f"Mean wage of {country_1.capitalize()}"], linestyle= '-', color= 'blue')
-
+    plt.plot(dates, df[f"Adjusted wage for {country_2_cap}"], linestyle='--', color='orange')
+    plt.plot(dates, df[f"Mean wage of {country_1_cap}"], linestyle='-', color='blue')
     plt.grid()
     plt.xlabel("Years")
     plt.ylabel("Salary (adjusted, in euros)")
-    plt.legend([f"What should you earn in {country_1.capitalize()} if you want to keep the purchasing power from {country_2.capitalize()}", f"Mean wage in {country_1.capitalize()}"], loc= 'best', fontsize= 10)
-    
-    plt.subplot(3, 1, 3)
-    plt.plot(dates, df[f"{country_1.capitalize()}"], linestyle= '-', color= 'orange')
-    plt.plot(dates, df[f"{country_2.capitalize()}"], linestyle= '-', color= 'blue')
+    plt.legend([f"What should you earn in {country_1_cap} if you want to keep the purchasing power from {country_2_cap}",
+                f"Mean wage in {country_1_cap}"], loc='best', fontsize=10)
 
+    plt.subplot(3, 1, 3)
+    plt.plot(dates, df[country_1_cap], linestyle='-', color='orange')
+    plt.plot(dates, df[country_2_cap], linestyle='-', color='blue')
     plt.grid()
     plt.xlabel("Years")
-    plt.ylabel("PPPs (actual individual expenditure)")
-    plt.legend([f"PPPs of {country_1.capitalize()}", f"PPPs of {country_2.capitalize()}"], loc= 'best', fontsize= 12)
-    plt.show()
+    plt.ylabel("Purchasing Power Parity index")
+    plt.legend([f"PPA of {country_1_cap}", f"PPA of {country_2_cap}"], loc='best', fontsize=10)
