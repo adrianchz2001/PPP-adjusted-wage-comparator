@@ -82,8 +82,8 @@ def cleaning(country1, country2, wages):
     df[f"Mean wage of {country1.capitalize()}"] = wage1
     df[f"Mean wage of {country2.capitalize()}"] = wage2
     
-    df[f"What should you earn in {country2.capitalize()} if you want to keep your power purchasing from {country1.capitalize()}"] = [round((df[f"Mean wage of {country1.capitalize()}"].iloc[i] * df[f"{country2.capitalize()}"].iloc[i])/(df[f"{country1.capitalize()}"].iloc[i]), 2) for i in range(len(df[f"Mean wage of {country1.capitalize()}"]))]
-    df[f"What should you earn in {country1.capitalize()} if you want to keep your power purchasing from {country2.capitalize()}"] = [round((df[f"Mean wage of {country2.capitalize()}"].iloc[i] * df[f"{country1.capitalize()}"].iloc[i])/(df[f"{country2.capitalize()}"].iloc[i]), 2) for i in range(len(df[f"Mean wage of {country2.capitalize()}"]))]
+    df[f"Adjusted wage for {country1.capitalize()}"] = [round((df[f"Mean wage of {country1.capitalize()}"].iloc[i] * df[f"{country2.capitalize()}"].iloc[i])/(df[f"{country1.capitalize()}"].iloc[i]), 2) for i in range(len(df[f"Mean wage of {country1.capitalize()}"]))]
+    df[f"Adjusted wage for {country1.capitalize()}"] = [round((df[f"Mean wage of {country2.capitalize()}"].iloc[i] * df[f"{country1.capitalize()}"].iloc[i])/(df[f"{country2.capitalize()}"].iloc[i]), 2) for i in range(len(df[f"Mean wage of {country2.capitalize()}"]))]
     
     return df
 
@@ -96,23 +96,23 @@ def graph(df, country_1, country_2):
     plt.figure(figsize = (16, 12))
     
     plt.subplot(3, 1, 1)
-    plt.plot(dates, df[f"What would you earn in {country_2.capitalize()} with the power purchasing of {country_1.capitalize()}"], linestyle= '--', color= 'orange')
+    plt.plot(dates, df[f"Adjusted wage for {country1.capitalize()}"], linestyle= '--', color= 'orange')
     plt.plot(dates, df[f"Mean wage of {country_2.capitalize()}"], linestyle= '-', color= 'blue')
 
     plt.grid()
     plt.xlabel("Years")
     plt.ylabel("Salary (adjusted, in euros)")
-    plt.legend([f"What would you earn in {country_2.capitalize()} with the power purchasing of {country_1.capitalize()}", f"Mean wage in {country_2.capitalize()}"], loc= 'best', fontsize= 10)
+    plt.legend([f"What should you earn in {country_2.capitalize()} if you want to keep the purchasing power from {country_1.capitalize()}", f"Mean wage in {country_2.capitalize()}"], loc= 'best', fontsize= 10)
     
     
     plt.subplot(3, 1, 2)
-    plt.plot(dates, df[f"What would you earn in {country_1.capitalize()} with the power purchasing of {country_2.capitalize()}"], linestyle= '--', color= 'orange')
+    plt.plot(dates, df[f"Adjusted wage for {country2.capitalize()}"], linestyle= '--', color= 'orange')
     plt.plot(dates, df[f"Mean wage of {country_1.capitalize()}"], linestyle= '-', color= 'blue')
 
     plt.grid()
     plt.xlabel("Years")
     plt.ylabel("Salary (adjusted, in euros)")
-    plt.legend([f"What would you earn in {country_1.capitalize()} with the power purchasing of {country_2.capitalize()}", f"Mean wage in {country_1.capitalize()}"], loc= 'best', fontsize= 10)
+    plt.legend([f"What should you earn in {country_1.capitalize()} if you want to keep the purchasing power from {country_2.capitalize()}", f"Mean wage in {country_1.capitalize()}"], loc= 'best', fontsize= 10)
     
     plt.subplot(3, 1, 3)
     plt.plot(dates, df[f"{country_1.capitalize()}"], linestyle= '-', color= 'orange')
